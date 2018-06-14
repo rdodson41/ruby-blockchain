@@ -71,10 +71,6 @@ RSpec.describe Blockchain do
         ]
       end
 
-      before do
-        # block.mine!(difficulty)
-      end
-
       it 'does not change the blockchain blocks' do
         expect { add_block! }.not_to change(blockchain, :blocks)
       end
