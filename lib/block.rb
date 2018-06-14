@@ -29,7 +29,7 @@ class Block
   # For our purposes, we'll set the required number of zeroes to 4.
   #
   def mine!(difficulty = 4)
-    # ...
+    @nonce += 1 until valid?(difficulty)
   end
 
   def digest
@@ -47,5 +47,9 @@ class Block
       time: time,
       nonce: nonce
     }
+  end
+
+  def valid?(difficulty = 4)
+    digest.start_with?('0' * difficulty)
   end
 end
