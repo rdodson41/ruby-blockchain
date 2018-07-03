@@ -53,7 +53,7 @@ RSpec.describe Blockchain do
 
   describe '#add_block!' do
     subject :add_block! do
-      blockchain.add_block!(block)
+      blockchain.add_block!(block, difficulty)
     end
 
     let :block do
