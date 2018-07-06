@@ -9,8 +9,8 @@ class Blockchain
     blocks.last
   end
 
-  def add_block!(block)
-    blocks << block if block_valid?(block)
+  def add_block!(block, difficulty = 4)
+    blocks << block if block_valid?(block, difficulty)
   end
 
   #
@@ -23,7 +23,22 @@ class Blockchain
   # Does it include a "double spend": a transaction which would result in a
   # negative balance?
   #
-  def block_valid?(block)
-    # ...
+  def block_valid?(block, difficulty = 4)
+    block.valid?(difficulty) &&
+      block.parent_digest == head.digest &&
+      balances(block).none? { |user, balance| balance < 0 }
+  end
+
+  private
+
+  def balances(block)
+    balances = Hash.new(0)
+    (blocks + [block]).each do |block|
+      block.transactions.each do |transaction|
+        balances[transaction[:from]] -= transaction[:amount] if transaction[:from]
+        balances[transaction[:to]] += transaction[:amount]
+      end
+    end
+    balances
   end
 end
