@@ -10,7 +10,8 @@ class Blockchain
   end
 
   def add_block!(block, difficulty = 4)
-    blocks << block if block_valid?(block, difficulty)
+    raise('Invalid block') unless block_valid?(block, difficulty)
+    blocks << block
   end
 
   #
