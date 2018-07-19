@@ -14,6 +14,17 @@ class Blockchain
     blocks << block
   end
 
+  def balances(uncommitted_blocks = [])
+    balances = Hash.new(0)
+    (blocks + uncommitted_blocks).each do |block|
+      block.transactions.each do |transaction|
+        balances[transaction[:from]] -= transaction[:amount] if transaction[:from]
+        balances[transaction[:to]] += transaction[:amount]
+      end
+    end
+    balances
+  end
+
   #
   # Is the new block valid?
   #
@@ -27,19 +38,6 @@ class Blockchain
   def block_valid?(block, difficulty = 4)
     block.valid?(difficulty) &&
       block.parent_digest == head.digest &&
-      balances(block).none? { |user, balance| balance < 0 }
-  end
-
-  private
-
-  def balances(block)
-    balances = Hash.new(0)
-    (blocks + [block]).each do |block|
-      block.transactions.each do |transaction|
-        balances[transaction[:from]] -= transaction[:amount] if transaction[:from]
-        balances[transaction[:to]] += transaction[:amount]
-      end
-    end
-    balances
+      balances([block]).none? { |user, balance| balance < 0 }
   end
 end
