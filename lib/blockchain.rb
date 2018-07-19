@@ -9,6 +9,10 @@ class Blockchain
     blocks.last
   end
 
+  def head_digest
+    head&.digest
+  end
+
   def add_block!(block, difficulty = 4)
     raise('Invalid block') unless block_valid?(block, difficulty)
     blocks << block
@@ -37,7 +41,7 @@ class Blockchain
   #
   def block_valid?(block, difficulty = 4)
     block.valid?(difficulty) &&
-      block.parent_digest == head.digest &&
+      block.parent_digest == head_digest &&
       balances([block]).none? { |user, balance| balance < 0 }
   end
 end
