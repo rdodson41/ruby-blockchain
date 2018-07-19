@@ -71,8 +71,8 @@ RSpec.describe Blockchain do
         ]
       end
 
-      it 'does not change the blockchain blocks' do
-        expect { add_block! }.not_to change(blockchain, :blocks)
+      it 'raises an error' do
+        expect { add_block! }.to raise_error('Invalid block')
       end
     end
 
@@ -91,8 +91,8 @@ RSpec.describe Blockchain do
         block.mine!(difficulty)
       end
 
-      it 'does not change the blockchain blocks' do
-        expect { add_block! }.not_to change(blockchain, :blocks)
+      it 'raises an error' do
+        expect { add_block! }.to raise_error('Invalid block')
       end
     end
 
@@ -111,8 +111,8 @@ RSpec.describe Blockchain do
         block.mine!(difficulty)
       end
 
-      it 'does not change the blockchain blocks' do
-        expect { add_block! }.not_to change(blockchain, :blocks)
+      it 'raises an error' do
+        expect { add_block! }.to raise_error('Invalid block')
       end
     end
 
